@@ -11,6 +11,8 @@ var log *stlog.Logger
 
 type fileLog string
 
+var _ io.Writer = (*fileLog)(nil)
+
 func (fl fileLog) Write(data []byte) (int, error) {
 	f, err := os.OpenFile(string(fl), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
