@@ -29,6 +29,10 @@ func startService(ctx context.Context, serviceName registry.ServiceName,
 
 	go func() {
 		log.Println(srv.ListenAndServe())
+		err := registry.ShutdownService(fmt.Sprintf("http://%s:%s", host, port))
+		if err != nil {
+			log.Println(err)
+		}
 		cancel()
 	}()
 
@@ -36,6 +40,10 @@ func startService(ctx context.Context, serviceName registry.ServiceName,
 		fmt.Printf("%v started. Press any key to stop", serviceName)
 		var s string
 		fmt.Scanln(&s) // 会等待用户输入，如果输入了就继续往下走，来Shutdown
+		err := registry.ShutdownService(fmt.Sprintf("http://%s:%s", host, port))
+		if err != nil {
+			log.Println(err)
+		}
 		srv.Shutdown(ctx)
 		cancel()
 	}()
