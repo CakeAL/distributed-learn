@@ -53,7 +53,9 @@ func (suh serviceUpdateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
+		return
 	}
+	prov.Update(p)
 }
 
 func ShutdownService(url string) error {

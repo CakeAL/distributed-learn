@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"distributed-learn/grades"
+	"distributed-learn/log"
 	"distributed-learn/registry"
 	"distributed-learn/service"
 	"fmt"
@@ -14,8 +15,10 @@ func main() {
 	serviceAddress := fmt.Sprintf("http://%v:%v", host, port)
 
 	r := registry.Registration{
-		ServiceName: registry.GradingService,
-		ServiceURL:  serviceAddress,
+		ServiceName:      registry.GradingService,
+		ServiceURL:       serviceAddress,
+		RequiredServices: []registry.ServiceName{registry.LogService},
+		ServiceUpdateURL: serviceAddress + "/services",
 	}
 
 	ctx, err := service.Start(context.Background(),
@@ -25,6 +28,10 @@ func main() {
 		grades.RegisterHandlers)
 	if err != nil {
 		stlog.Fatal(err)
+	}
+	if logProvider, err := registry.GetProvider(registry.LogService); err == nil {
+		fmt.Printf("Logging service found at %v\n", logProvider)
+		log.SetClientLogger(logProvider, r.ServiceName)
 	}
 	<-ctx.Done()
 	fmt.Println("Shutting down grading service")
