@@ -1,1 +1,7 @@
 go: 2024/06/04 20:43:33 test
+[go] - 2024/06/06 14:32:21 [Portal] - Failed to parse score:  strconv.ParseFloat: parsing "": invalid syntax
+
+[go] - 2024/06/06 14:32:22 [Portal] - Failed to parse score:  strconv.ParseFloat: parsing "": invalid syntax
+
+[go] - 2024/06/06 14:32:33 [Portal] - http: Server closed
+
